@@ -1,0 +1,24 @@
+
+{
+    "name": "Convos AAC",
+    "short_name": "Convos AAC",
+    "description": "A simple, accessible communication app.",
+    "id": "/convos-aac/",
+    "start_url": "/convos-aac/",
+    "scope": "/convos-aac/",
+    "display": "standalone",
+    "background_color": "#121826",
+    "theme_color": "#121826",
+    "icons": [
+        {
+            "src": "assets/icons/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "assets/icons/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
