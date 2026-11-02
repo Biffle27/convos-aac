@@ -25,21 +25,26 @@ self.addEventListener("install", (event) => {
 });
 
 // Remove outdated caches.
-self.addEventListener("activate", (event) => {
-    event.waitUntil(
-        caches.keys().then((cacheNames) => {
-            return Promise.all(
-                cacheNames
-                    .filter((name) =>
-                        name.startsWith("convos-aac-") &&
-                        name !== CACHE_NAME
-                    )
-                    .map((name) => caches.delete(name))
-            );
+self.addEventListener("fetch", (event) => {
+    if (event.request.method !== "GET") return;
+
+    // Handle page navigation, including launching
+    // Convos AAC from the Home Screen.
+    if (event.request.mode === "navigate") {
+        event.respondWith(
+            caches.match("./index.html").then((cachedPage) => {
+                return cachedPage || fetch(event.request);
+            })
+        );
+        return;
+    }
+
+    // Serve other application resources from cache.
+    event.respondWith(
+        caches.match(event.request).then((cachedResponse) => {
+            return cachedResponse || fetch(event.request);
         })
     );
-
-    self.clients.claim();
 });
 
 // Serve cached files when available.
