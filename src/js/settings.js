@@ -2,9 +2,6 @@
 const themeButton = document.getElementById("themeButton");
 const settingsButton = document.getElementById("settingsButton");
 const settingsPanel = document.getElementById("settingsPanel");
-const closeSettingsButton = document.getElementById(
-    "closeSettingsButton"
-);
 
 const textSizeSelect = document.getElementById("textSizeSelect");
 const speechRateSlider = document.getElementById("speechRate");
@@ -71,16 +68,16 @@ themeButton.addEventListener("click", () => {
     applySettings();
 });
 
-// Open the settings panel.
 settingsButton.addEventListener("click", () => {
-    settingsPanel.hidden = false;
-    closeSettingsButton.focus();
-});
+    // Toggle the settings panel open or closed.
+    settingsPanel.hidden = !settingsPanel.hidden;
 
-// Close the settings panel.
-closeSettingsButton.addEventListener("click", () => {
-    settingsPanel.hidden = true;
-    settingsButton.focus();
+    // Let assistive technology know whether
+    // the settings panel is currently open.
+    settingsButton.setAttribute(
+        "aria-expanded",
+        String(!settingsPanel.hidden)
+    );
 });
 
 // Change text size.
