@@ -109,3 +109,82 @@ speechRateSlider.addEventListener("input", () => {
 
 // Restore saved preferences when the page loads.
 applySettings();
+
+
+// Voice preference controls
+const voiceSelect = document.getElementById("voiceSelect");
+const testVoiceButton = document.getElementById("testVoiceButton");
+
+// Retrieve the saved voice preference.
+let selectedVoiceURI =
+    localStorage.getItem("convos-voice") || "";
+
+// Populate the dropdown with available voices.
+function populateVoiceList() {
+    if (!("speechSynthesis" in window)) {
+        voiceSelect.disabled = true;
+        testVoiceButton.disabled = true;
+        return;
+    }
+
+    const voices = window.speechSynthesis.getVoices();
+
+    // Keep the default voice option.
+    voiceSelect.replaceChildren();
+
+    const defaultOption = document.createElement("option");
+    defaultOption.value = "";
+    defaultOption.textContent = "Device Default";
+    voiceSelect.appendChild(defaultOption);
+
+    // Show available English voices.
+    const englishVoices = voices.filter(voice =>
+        voice.lang.toLowerCase().startsWith("en")
+    );
+
+    englishVoices.forEach(voice => {
+        const option = document.createElement("option");
+
+        option.value = voice.voiceURI;
+        option.textContent = `${voice.name} (${voice.lang})`;
+
+        voiceSelect.appendChild(option);
+    });
+
+    // Restore the saved voice when it becomes available.
+    const savedVoiceAvailable = englishVoices.some(
+        voice => voice.voiceURI === selectedVoiceURI
+    );
+
+    if (savedVoiceAvailable) {
+        voiceSelect.value = selectedVoiceURI;
+    } else {
+        // Display Device Default temporarily,
+        // but preserve the saved preference.
+        voiceSelect.value = "";
+    }
+}
+
+// Save voice changes.
+voiceSelect.addEventListener("change", () => {
+    selectedVoiceURI = voiceSelect.value;
+
+    localStorage.setItem(
+        "convos-voice",
+        selectedVoiceURI
+    );
+});
+
+// Test the selected voice.
+testVoiceButton.addEventListener("click", () => {
+    speakText("Hello! This is my Convos AAC voice.");
+});
+
+// Browsers may load voices asynchronously.
+window.speechSynthesis?.addEventListener(
+    "voiceschanged",
+    populateVoiceList
+);
+
+// Initial voice loading.
+populateVoiceList();

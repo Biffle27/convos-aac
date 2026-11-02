@@ -18,6 +18,19 @@ function speakText(text) {
     utterance.lang = "en-US";
     utterance.rate = appSettings.speechRate;
 
+    // Use the selected voice when available.
+    if (selectedVoiceURI) {
+        const voices = window.speechSynthesis.getVoices();
+
+        const selectedVoice = voices.find(
+            voice => voice.voiceURI === selectedVoiceURI
+        );
+
+        if (selectedVoice) {
+        utterance.voice = selectedVoice;
+        }
+    }
+
     window.speechSynthesis.speak(utterance);
 }
 
