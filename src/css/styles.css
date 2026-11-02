@@ -1,0 +1,152 @@
+
+/* Global colors and design settings */
+:root {
+    --background: #121826;
+    --surface: #1e293b;
+    --surface-hover: #334155;
+    --text: #f8fafc;
+    --border: #475569;
+    --accent: #2563eb;
+}
+
+/* Basic page styling */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: var(--background);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+}
+
+button,
+textarea {
+    font: inherit;
+}
+
+button {
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    cursor: pointer;
+    min-height: 56px;
+}
+
+button:hover {
+    background: var(--surface-hover);
+}
+
+button:focus-visible,
+textarea:focus-visible {
+    outline: 3px solid #93c5fd;
+    outline-offset: 3px;
+}
+
+/* Main application layout */
+.app-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+/* Header */
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+.app-header h1 {
+    font-size: 28px;
+    margin: 0;
+}
+
+.header-controls {
+    display: flex;
+    gap: 8px;
+}
+
+.header-controls button {
+    padding: 12px;
+    font-size: 16px;
+}
+
+/* Categories */
+.categories-section {
+    margin-bottom: 36px;
+}
+
+h2 {
+    font-size: 22px;
+    margin-bottom: 16px;
+}
+
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.category-button {
+    min-height: 80px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.phrase-container[hidden] {
+    display: none;
+}
+
+/* Message area */
+textarea {
+    width: 100%;
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    resize: vertical;
+    min-height: 130px;
+}
+
+.message-controls {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.primary-button {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+.primary-button:hover {
+    background: #1d4ed8;
+}
+
+/* Smaller screens */
+@media (max-width: 600px) {
+    .app-container {
+        padding: 16px;
+    }
+
+    .app-header {
+        flex-wrap: wrap;
+    }
+
+    .category-button {
+        font-size: 18px;
+    }
+
+    .message-controls {
+        gap: 8px;
+    }
+}

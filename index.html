@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Convos AAC</title>
+
+    <link rel="stylesheet" href="src/css/styles.css">
+</head>
+
+<body>
+    <main class="app-container">
+
+        <header class="app-header">
+            <h1>Convos AAC</h1>
+
+            <div class="header-controls">
+                <button id="themeButton"
+                        aria-label="Toggle theme">
+                    Theme
+                </button>
+
+                <button id="settingsButton">
+                    Settings
+                </button>
+            </div>
+        </header>
+
+        <section class="categories-section">
+            <h2>Quick Phrases</h2>
+
+            <div class="category-grid">
+                <button class="category-button"
+                        data-category="food">
+                    Food & Drink
+                </button>
+
+                <button class="category-button"
+                        data-category="needs">
+                    Needs
+                </button>
+
+                <button class="category-button"
+                        data-category="social">
+                    Social
+                </button>
+
+                <button class="category-button"
+                        data-category="medical">
+                    Medical
+                </button>
+
+                <button class="category-button"
+                        data-category="activities">
+                    Activities
+                </button>
+
+                <button class="category-button"
+                        data-category="feelings">
+                    Feelings
+                </button>
+            </div>
+
+            <div id="phraseContainer"
+                 class="phrase-container"
+                 hidden>
+            </div>
+        </section>
+
+        <section class="message-section">
+            <h2>Your Message</h2>
+
+            <textarea
+                id="messageInput"
+                placeholder="Type your message here..."
+                rows="4"
+                aria-label="Your message"
+            ></textarea>
+
+            <div class="message-controls">
+                <button id="speakButton"
+                        class="primary-button">
+                    Speak
+                </button>
+
+                <button id="stopButton">
+                    Stop
+                </button>
+
+                <button id="clearButton">
+                    Clear
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="src/js/speech.js"></script>
+</body>
+</html>
