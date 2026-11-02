@@ -28,6 +28,45 @@
                 </button>
             </div>
         </header>
+  
+    <section id="settingsPanel"
+            class="settings-panel"
+            aria-label="Application settings"
+            hidden>
+
+        <h2>Settings</h2>
+
+        <div class="setting-group">
+            <label for="textSizeSelect">Text Size</label>
+
+            <select id="textSizeSelect">
+                <option value="small">Small</option>
+                <option value="medium">Medium</option>
+                <option value="large">Large</option>
+            </select>
+        </div>
+
+        <div class="setting-group">
+            <label for="speechRate">
+                Speech Speed:
+                <span id="speechRateValue">1.0x</span>
+            </label>
+
+            <input
+                type="range"
+                id="speechRate"
+                min="0.5"
+                max="1.5"
+                step="0.1"
+                value="1"
+            >
+        </div>
+
+        <button id="closeSettingsButton">
+            Close Settings
+        </button>
+
+    </section>
 
         <section class="categories-section">
             <h2>Quick Phrases</h2>
@@ -98,6 +137,7 @@
 
     </main>
 
+    <script src="src/js/settings.js"></script>
     <script src="src/js/speech.js"></script>
     <script src="src/js/phrases.js"></script>
     <script src="src/js/main.js"></script>

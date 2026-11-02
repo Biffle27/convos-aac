@@ -178,3 +178,105 @@ textarea {
         grid-template-columns: 1fr;
     }
 }
+
+
+/* Light theme */
+:root[data-theme="light"] {
+    --background: #f8fafc;
+    --surface: #ffffff;
+    --surface-hover: #e2e8f0;
+    --text: #0f172a;
+    --border: #94a3b8;
+    --accent: #1d4ed8;
+}
+
+/* Settings panel */
+.settings-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 32px;
+}
+
+.setting-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.setting-group label {
+    font-weight: bold;
+}
+
+.setting-group select {
+    background: var(--background);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    font: inherit;
+    min-height: 48px;
+}
+
+.setting-group input[type="range"] {
+    width: 100%;
+    min-height: 44px;
+    accent-color: var(--accent);
+}
+
+
+/* Global text-size settings */
+:root[data-text-size="small"] {
+    --aac-font-size: 16px;
+}
+
+:root[data-text-size="medium"] {
+    --aac-font-size: 20px;
+}
+
+:root[data-text-size="large"] {
+    --aac-font-size: 28px;
+}
+
+/* Apply selected size to all application text */
+body {
+    font-size: var(--aac-font-size, 20px);
+}
+
+/* Make controls inherit the global text size */
+button,
+textarea,
+select,
+input {
+    font-size: inherit;
+}
+
+/* Headings scale proportionally */
+h1 {
+    font-size: 1.5em;
+}
+
+h2 {
+    font-size: 1.2em;
+}
+
+h3 {
+    font-size: 1.1em;
+}
+
+/* Override earlier fixed-size declarations */
+.app-header h1 {
+    font-size: 1.5em;
+}
+
+.header-controls button {
+    font-size: inherit;
+}
+
+.category-button,
+.phrase-button,
+#messageInput {
+    font-size: inherit;
+}
