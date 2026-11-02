@@ -1,0 +1,69 @@
+
+{
+  "food": {
+    "name": "Food & Drink",
+    "phrases": [
+      "I'm hungry.",
+      "I'm thirsty.",
+      "Can I have some water?",
+      "I would like coffee.",
+      "I would like something to eat.",
+      "I'm finished eating."
+    ]
+  },
+  "needs": {
+    "name": "Needs",
+    "phrases": [
+      "I need help.",
+      "I need to use the bathroom.",
+      "I need a break.",
+      "Please give me a moment.",
+      "I'm too hot.",
+      "I'm too cold."
+    ]
+  },
+  "social": {
+    "name": "Social",
+    "phrases": [
+      "Hello!",
+      "How are you?",
+      "Thank you.",
+      "You're welcome.",
+      "Please tell me more.",
+      "Goodbye!"
+    ]
+  },
+  "medical": {
+    "name": "Medical",
+    "phrases": [
+      "I'm in pain.",
+      "I don't feel well.",
+      "I need my medication.",
+      "Please call my nurse.",
+      "I feel dizzy.",
+      "I need to see a doctor."
+    ]
+  },
+  "activities": {
+    "name": "Activities",
+    "phrases": [
+      "I want to go outside.",
+      "Let's watch TV.",
+      "I want to listen to music.",
+      "Let's go for a walk.",
+      "I want to rest.",
+      "I want to do something else."
+    ]
+  },
+  "feelings": {
+    "name": "Feelings",
+    "phrases": [
+      "I'm happy.",
+      "I'm sad.",
+      "I'm frustrated.",
+      "I'm tired.",
+      "I'm worried.",
+      "I'm excited."
+    ]
+  }
+}
