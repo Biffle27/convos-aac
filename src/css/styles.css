@@ -280,3 +280,39 @@ h3 {
 #messageInput {
     font-size: inherit;
 }
+
+
+/* Persistent Quick Phrases */
+
+#quickPhrasesSection {
+    margin-bottom: 1.5rem;
+}
+
+.quick-phrases-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+}
+
+.quick-phrase-button {
+    min-height: 60px;
+    padding: 0.75rem;
+    border: 2px solid #64748b;
+    border-radius: 12px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-size: 1.05em;
+    font-weight: 600;
+    cursor: pointer;
+    overflow-wrap: anywhere;
+}
+
+.quick-phrase-button:active {
+    transform: scale(0.98);
+}
+
+.quick-phrase-button:focus-visible {
+    outline: 3px solid #60a5fa;
+    outline-offset: 3px;
+}

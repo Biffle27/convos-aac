@@ -93,3 +93,17 @@ categoryButtons.forEach((button) => {
         showCategory(button.dataset.category);
     });
 });
+
+const quickPhraseButtons = document.querySelectorAll(
+    ".quick-phrase-button"
+);
+
+quickPhraseButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+        const phrase = button.dataset.phrase;
+
+        if (phrase) {
+            speakText(phrase);
+        }
+    });
+});

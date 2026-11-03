@@ -15,6 +15,7 @@
     <meta name="apple-mobile-web-app-title" content="Convos AAC">
 </head>
 
+
 <body>
     <main class="app-container">
 
@@ -26,7 +27,7 @@
                         aria-label="Toggle theme">
                     Theme
                 </button>
-        
+
                 <button
                     id="settingsButton"
                     aria-controls="settingsPanel"
@@ -34,91 +35,137 @@
                 >
                     Settings
                 </button>
-
             </div>
         </header>
-  
-    <section id="settingsPanel"
-            class="settings-panel"
-            aria-label="Application settings"
-            hidden>
 
-        <h2>Settings</h2>
+        <section id="settingsPanel"
+                 class="settings-panel"
+                 aria-label="Application settings"
+                 hidden>
 
-        <div class="setting-group">
-            <label for="textSizeSelect">Text Size</label>
+            <h2>Settings</h2>
 
-            <select id="textSizeSelect">
-                <option value="small">Small</option>
-                <option value="medium">Medium</option>
-                <option value="large">Large</option>
-            </select>
-        </div>
+            <div class="setting-group">
+                <label for="textSizeSelect">Text Size</label>
 
-        <div class="setting-group">
-            <label for="speechRate">
-                Speech Speed:
-                <span id="speechRateValue">1.0x</span>
-            </label>
+                <select id="textSizeSelect">
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+                </select>
+            </div>
 
-            <input
-                type="range"
-                id="speechRate"
-                min="0.5"
-                max="1.5"
-                step="0.1"
-                value="1"
-            >
-        </div>
+            <div class="setting-group">
+                <label for="speechRate">
+                    Speech Speed:
+                    <span id="speechRateValue">1.0x</span>
+                </label>
 
-        <div class="setting-group">
-            <label for="voiceSelect">Voice</label>
+                <input
+                    type="range"
+                    id="speechRate"
+                    min="0.5"
+                    max="1.5"
+                    step="0.1"
+                    value="1"
+                >
+            </div>
 
-            <select id="voiceSelect">
-                <option value="">Device Default</option>
-            </select>
+            <div class="setting-group">
+                <label for="voiceSelect">Voice</label>
 
-            <button id="testVoiceButton" type="button">
-                Test Voice
-            </button>
-        </div>
+                <select id="voiceSelect">
+                    <option value="">Device Default</option>
+                </select>
 
-    </section>
+                <button id="testVoiceButton" type="button">
+                    Test Voice
+                </button>
+            </div>
+        </section>
+
+        <!-- NEW: Quick Phrases section -->
+        <!-- This stays visible on every category screen -->
+
+        <section id="quickPhrasesSection"
+                 aria-labelledby="quickPhrasesHeading">
+
+            <h2 id="quickPhrasesHeading">Quick Phrases</h2>
+
+            <div class="quick-phrases-grid">
+
+                <button class="quick-phrase-button"
+                        data-phrase="Yes">
+                    Yes
+                </button>
+
+                <button class="quick-phrase-button"
+                        data-phrase="No">
+                    No
+                </button>
+
+                <button class="quick-phrase-button"
+                        data-phrase="Please wait.">
+                    Please wait.
+                </button>
+
+                <button class="quick-phrase-button"
+                        data-phrase="I need help.">
+                    I need help.
+                </button>
+
+            </div>
+        </section>
+
+        <!-- Existing Categories section -->
 
         <section class="categories-section">
-            <h2>Quick Phrases</h2>
+            <h2>Categories</h2>
 
-        <div class="category-grid">
-            <button class="category-button" data-category="conversation">
-                Conversation &amp; Social
-            </button>
+            <div class="category-grid">
+                <button class="category-button"
+                        data-category="conversation">
+                    Conversation &amp; Social
+                </button>
 
-            <button class="category-button" data-category="needs">
-        Needs &amp; Comfort
-            </button>
+                <button class="category-button"
+                        data-category="needs">
+                    Needs &amp; Comfort
+                </button>
 
-            <button class="category-button" data-category="medical">
-                Health &amp; Medical
-            </button>
+                <button class="category-button"
+                        data-category="feelings">
+                    Feelings &amp; Opinions
+                </button>
 
-            <button class="category-button" data-category="activities">
-                Activities &amp; Plans
-            </button>
+                <button class="category-button"
+                        data-category="medical">
+                    Health &amp; Medical
+                </button>
 
-            <button class="category-button" data-category="communication">
-                Communication Help
-            </button>
+                <button class="category-button"
+                        data-category="activities">
+                    Activities &amp; Plans
+                </button>
 
-            <button class="category-button" data-category="decisions">
-                Decisions &amp; Independence
-            </button>
-        </div>
+                <button class="category-button"
+                        data-category="communication">
+                    Communication Help
+                </button>
+
+                <button class="category-button"
+                        data-category="decisions">
+                    Decisions &amp; Independence
+                </button>
+            </div>
 
             <div id="phraseContainer"
                  class="phrase-container"
                  hidden>
             </div>
         </section>
+
+        <!-- Existing message section -->
 
         <section class="message-section">
             <h2>Your Message</h2>
