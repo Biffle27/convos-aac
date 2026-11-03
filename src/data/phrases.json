@@ -1,69 +1,108 @@
 
 {
-  "food": {
-    "name": "Food & Drink",
+  "conversation": {
+    "name": "Conversation & Social",
     "phrases": [
-      "I'm hungry.",
-      "I'm thirsty.",
-      "Can I have some water?",
-      "I would like coffee.",
-      "I would like something to eat.",
-      "I'm finished eating."
+      "Hello! How are you?",
+      "How was your day?",
+      "What have you been up to?",
+      "I have something to tell you.",
+      "I have a question.",
+      "Tell me more about that.",
+      "What do you think?",
+      "That's interesting!",
+      "That's funny!",
+      "I agree with you.",
+      "I really enjoyed talking with you.",
+      "It was good to see you!"
     ]
   },
   "needs": {
-    "name": "Needs",
+    "name": "Needs & Comfort",
     "phrases": [
-      "I need help.",
+      "I need some help, please.",
       "I need to use the bathroom.",
-      "I need a break.",
-      "Please give me a moment.",
+      "I'd like something to drink.",
+      "I'm hungry.",
+      "Please close my door.",
+      "Please leave my door open.",
+      "Open the curtains.",
+      "Close the curtains.",
+      "Please open the window.",
+      "Please close the window.",
       "I'm too hot.",
-      "I'm too cold."
-    ]
-  },
-  "social": {
-    "name": "Social",
-    "phrases": [
-      "Hello!",
-      "How are you?",
-      "Thank you.",
-      "You're welcome.",
-      "Please tell me more.",
-      "Goodbye!"
+      "I'm too cold.",
+      "I'm tired and need to rest.",
+      "I'd like some privacy.",
+      "I'd like to get back into bed."
     ]
   },
   "medical": {
-    "name": "Medical",
+    "name": "Health & Medical",
     "phrases": [
       "I'm in pain.",
-      "I don't feel well.",
-      "I need my medication.",
-      "Please call my nurse.",
-      "I feel dizzy.",
-      "I need to see a doctor."
+      "Something doesn't feel right.",
+      "I'm having trouble breathing.",
+      "I'm feeling dizzy.",
+      "I'm feeling nauseated.",
+      "I'm not feeling well.",
+      "I have a headache.",
+      "I have some questions.",
+      "Can you explain that again?",
+      "I'd like to speak with my doctor.",
+      "I'd like some pain medications.",
+      "I need some rest."
     ]
   },
   "activities": {
-    "name": "Activities",
+    "name": "Activities & Plans",
     "phrases": [
-      "I want to go outside.",
-      "Let's watch TV.",
-      "I want to listen to music.",
-      "Let's go for a walk.",
-      "I want to rest.",
-      "I want to do something else."
+      "What are we doing today?",
+      "What are we doing tomorrow?",
+      "I'd like to go outside.",
+      "I'd like to watch something.",
+      "I'd like to listen to music.",
+      "I'd like to go to an event.",
+      "Can you show me the calendar?",
+      "Can we make plans for this weekend?",
+      "I'm looking forward to that.",
+      "I'd rather do something else.",
+      "I want to take a break.",
+      "I had a good time!"
     ]
   },
-  "feelings": {
-    "name": "Feelings",
+  "communication": {
+    "name": "Communication Help",
     "phrases": [
-      "I'm happy.",
-      "I'm sad.",
-      "I'm frustrated.",
-      "I'm tired.",
-      "I'm worried.",
-      "I'm excited."
+      "Please give me time to respond.",
+      "That's not what I meant.",
+      "Let me try again.",
+      "Can you repeat that?",
+      "I have aphasia, which is a language disorder.",
+      "I understand what you're saying.",
+      "I'm having trouble expressing myself.",
+      "Please ask me one question at a time.",
+      "Please give me some choices.",
+      "Please don't interrupt me.",
+      "I want to finish what I'm saying.",
+      "Please don't speak for me."
+    ]
+  },
+  "decisions": {
+    "name": "Decisions & Independence",
+    "phrases": [
+      "I want to make that decision myself.",
+      "I don't want to do that.",
+      "I'd like to try doing it myself.",
+      "Please ask before helping me.",
+      "I need more information before deciding.",
+      "I would prefer something different.",
+      "I'm comfortable with that decision.",
+      "I'm not comfortable with that.",
+      "I want to talk about my options.",
+      "I changed my mind.",
+      "I need some time to think.",
+      "Please respect my decision."
     ]
   }
 }
