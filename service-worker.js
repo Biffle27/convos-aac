@@ -1,5 +1,5 @@
 
-const CACHE_NAME = "convos-aac-v4";
+const CACHE_NAME = "convos-aac-v5";
 
 const APP_FILES = [
     "./",
@@ -24,28 +24,30 @@ self.addEventListener("install", (event) => {
     self.skipWaiting();
 });
 
-// Remove outdated caches.
+
 self.addEventListener("fetch", (event) => {
     if (event.request.method !== "GET") return;
 
-    // Handle page navigation, including launching
-    // Convos AAC from the Home Screen.
+    // For page navigation, try the network first.
+    // Fall back to the cached page when offline.
     if (event.request.mode === "navigate") {
         event.respondWith(
-            caches.match("./index.html").then((cachedPage) => {
-                return cachedPage || fetch(event.request);
+            fetch(event.request).catch(async () => {
+                const cache = await caches.open(CACHE_NAME);
+                return cache.match("./index.html");
             })
         );
         return;
     }
 
-    // Serve other application resources from cache.
+    // For other files, use cache first.
     event.respondWith(
         caches.match(event.request).then((cachedResponse) => {
             return cachedResponse || fetch(event.request);
         })
     );
 });
+
 
 // Serve cached files when available.
 self.addEventListener("fetch", (event) => {
