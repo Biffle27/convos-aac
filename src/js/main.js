@@ -11,7 +11,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 // Register the service worker for offline access.
-if ("serviceWorker" in navigator) {
+const isLocalDevelopment =
+    location.hostname === "localhost" ||
+    location.hostname === "127.0.0.1";
+
+if ("serviceWorker" in navigator && !isLocalDevelopment) {
     let refreshing = false;
 
     // Reload once when a new service worker takes control.

@@ -316,3 +316,54 @@ h3 {
     outline: 3px solid #60a5fa;
     outline-offset: 3px;
 }
+
+
+/* Phrase favorites: integrated star design */
+
+.phrase-row {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    min-width: 0;
+
+    border: 2px solid #64748b;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.phrase-row .phrase-button {
+    flex: 1;
+    min-width: 0;
+
+    border: none;
+    border-radius: 0;
+    margin: 0;
+}
+
+.phrase-row .favorite-button {
+    flex: 0 0 56px;
+    min-height: 56px;
+
+    border: none;
+    border-radius: 0;
+    margin: 0;
+
+    background: transparent;
+    color: inherit;
+    font-size: 1.8rem;
+    cursor: pointer;
+}
+
+.phrase-row .favorite-button[aria-pressed="true"] {
+    color: #fbbf24;
+}
+
+.phrase-row .favorite-button:focus-visible,
+.phrase-row .phrase-button:focus-visible {
+    outline: 3px solid #60a5fa;
+    outline-offset: -3px;
+}
+
+.phrase-row .favorite-button:active {
+    transform: scale(0.97);
+}
