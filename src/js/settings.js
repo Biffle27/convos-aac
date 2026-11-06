@@ -27,7 +27,13 @@ function loadSettings() {
             ? savedTheme
             : defaultSettings.theme,
 
-        textSize: ["small", "medium", "large"].includes(savedTextSize)
+        textSize: [
+            "small",
+            "medium",
+            "large",
+            "xl",
+            "xxl"
+        ].includes(savedTextSize)
             ? savedTextSize
             : defaultSettings.textSize,
 
@@ -35,8 +41,8 @@ function loadSettings() {
             Number.isFinite(Number(savedSpeechRate)) &&
             Number(savedSpeechRate) >= 0.5 &&
             Number(savedSpeechRate) <= 1.5
-                ? Number(savedSpeechRate)
-                : defaultSettings.speechRate
+            ? Number(savedSpeechRate)
+            : defaultSettings.speechRate
     };
 }
 

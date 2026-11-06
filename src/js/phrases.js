@@ -1,212 +1,294 @@
 
-const categoryButtons = document.querySelectorAll(
-    ".category-button"
-);
+const categoryGrid = document.querySelector(".category-grid");
+const phraseContainer = document.getElementById("phraseContainer");
+const quickPhrasesGrid = document.querySelector(".quick-phrases-grid");
 
-const categoryGrid = document.querySelector(
-    ".category-grid"
-);
+const VOCABULARY_STORAGE_KEY = "convosAACVocabularyV1";
+const LEGACY_FAVORITES_KEY = "convosAACFavorites";
 
-const phraseContainer = document.getElementById(
-    "phraseContainer"
-);
+let vocabulary = null;
 
-let phraseLibrary = {};
-
-// Store favorites separately for each category.
-const FAVORITES_STORAGE_KEY = "convosAACFavorites";
-
-let favorites = {};
-
-// Load previously saved favorites.
-try {
-    const savedFavorites = JSON.parse(
-        localStorage.getItem(FAVORITES_STORAGE_KEY) || "{}"
-    );
-
-    if (
-        savedFavorites &&
-        typeof savedFavorites === "object" &&
-        !Array.isArray(savedFavorites)
-    ) {
-        favorites = savedFavorites;
-    }
-} catch (error) {
-    console.error("Could not load favorites:", error);
-}
-
-// Save favorites to the device.
-function saveFavorites() {
+// Save the personalized vocabulary.
+function saveVocabulary() {
     try {
         localStorage.setItem(
-            FAVORITES_STORAGE_KEY,
-            JSON.stringify(favorites)
+            VOCABULARY_STORAGE_KEY,
+            JSON.stringify(vocabulary)
         );
+        return true;
     } catch (error) {
-        console.error("Could not save favorites:", error);
+        console.error("Unable to save vocabulary:", error);
+        return false;
     }
 }
 
-// Check whether a phrase is a favorite.
-function isFavorite(categoryId, phrase) {
+// Check that stored data has the structure we expect.
+function isValidVocabulary(data) {
     return (
-        Array.isArray(favorites[categoryId]) &&
-        favorites[categoryId].includes(phrase)
+        data &&
+        data.version === 1 &&
+        Array.isArray(data.categories) &&
+        Array.isArray(data.quickPhrases) &&
+        data.categories.every(category =>
+            typeof category.id === "string" &&
+            typeof category.name === "string" &&
+            Array.isArray(category.phrases) &&
+            category.phrases.every(phrase =>
+                typeof phrase.id === "string" &&
+                typeof phrase.text === "string" &&
+                typeof phrase.favorite === "boolean"
+            )
+        ) &&
+        data.quickPhrases.every(phrase =>
+            typeof phrase.id === "string" &&
+            typeof phrase.text === "string"
+        )
     );
 }
 
-// Add or remove a favorite.
-function toggleFavorite(categoryId, phrase) {
-    if (!Array.isArray(favorites[categoryId])) {
-        favorites[categoryId] = [];
-    }
+// Convert the original JSON library into editable data.
+function createDefaultVocabulary(defaultLibrary) {
+    let oldFavorites = {};
 
-    if (isFavorite(categoryId, phrase)) {
-        favorites[categoryId] = favorites[categoryId].filter(
-            (savedPhrase) => savedPhrase !== phrase
+    try {
+        const stored = JSON.parse(
+            localStorage.getItem(LEGACY_FAVORITES_KEY) || "{}"
         );
-    } else {
-        favorites[categoryId].push(phrase);
+
+        if (stored && typeof stored === "object" &&
+            !Array.isArray(stored)) {
+            oldFavorites = stored;
+        }
+    } catch (error) {
+        console.error("Could not read old favorites:", error);
     }
 
-    saveFavorites();
+    const categories = Object.entries(defaultLibrary).map(
+        ([categoryId, category]) => ({
+            id: categoryId,
+            name: category.name,
+            phrases: category.phrases.map((text, index) => ({
+                id: `${categoryId}-phrase-${index + 1}`,
+                text: text,
+                favorite: Array.isArray(oldFavorites[categoryId]) &&
+                    oldFavorites[categoryId].includes(text)
+            }))
+        })
+    );
 
-    // Re-render this category with favorites at the top.
-    showCategory(categoryId);
+    const quickPhrases = Array.from(
+        document.querySelectorAll(".quick-phrase-button")
+    ).map((button, index) => ({
+        id: `quick-${index + 1}`,
+        text: button.dataset.phrase || button.textContent.trim()
+    }));
+
+    return {
+        version: 1,
+        quickPhrases: quickPhrases,
+        categories: categories
+    };
 }
 
-// Load our phrase library from the JSON file.
+// Load saved vocabulary or initialize from defaults.
 async function loadPhrases() {
     try {
-        const response = await fetch("src/data/phrases.json");
+        const saved = localStorage.getItem(
+            VOCABULARY_STORAGE_KEY
+        );
 
-        if (!response.ok) {
-            throw new Error("Could not load phrase library.");
+        if (saved !== null) {
+            const parsed = JSON.parse(saved);
+
+            if (!isValidVocabulary(parsed)) {
+                throw new Error(
+                    "Saved vocabulary has an unsupported format."
+                );
+            }
+
+            vocabulary = parsed;
+        } else {
+            const response = await fetch("src/data/phrases.json");
+
+            if (!response.ok) {
+                throw new Error("Could not load default phrases.");
+            }
+
+            const defaults = await response.json();
+
+            vocabulary = createDefaultVocabulary(defaults);
+
+            if (!saveVocabulary()) {
+                console.warn(
+                    "Vocabulary is available, but persistence failed."
+                );
+            }
         }
 
-        phraseLibrary = await response.json();
+        renderQuickPhrases();
+        renderCategories();
 
     } catch (error) {
-        console.error("Phrase loading error:", error);
+        console.error("Vocabulary loading error:", error);
 
         phraseContainer.hidden = false;
         phraseContainer.textContent =
-            "Unable to load phrases. Please refresh the page.";
+            "Unable to load vocabulary. Please check your saved data.";
     }
 }
 
-// Display phrases for a selected category.
-function showCategory(categoryId) {
-    const category = phraseLibrary[categoryId];
+// Display persistent Quick Phrases.
+function renderQuickPhrases() {
+    if (!vocabulary || !quickPhrasesGrid) return;
 
+    quickPhrasesGrid.replaceChildren();
+
+    // Hide the Quick Phrases section if no phrases exist.
+    const quickPhrasesSection = document.getElementById(
+        "quickPhrasesSection"
+    );
+
+    if (quickPhrasesSection) {
+        quickPhrasesSection.hidden =
+            vocabulary.quickPhrases.length === 0;
+    }
+
+    vocabulary.quickPhrases.forEach(phrase => {
+        const button = document.createElement("button");
+
+        button.className = "quick-phrase-button";
+        button.textContent = phrase.text;
+        button.dataset.phrase = phrase.text;
+
+        button.addEventListener("click", () => {
+            speakText(phrase.text);
+        });
+
+        quickPhrasesGrid.appendChild(button);
+    });
+}
+
+// Display category buttons from personalized data.
+function renderCategories() {
+    if (!vocabulary) return;
+
+    categoryGrid.replaceChildren();
+
+    vocabulary.categories.forEach(category => {
+        const button = document.createElement("button");
+
+        button.className = "category-button";
+        button.dataset.category = category.id;
+        button.textContent = category.name;
+
+        button.addEventListener("click", () => {
+            showCategory(category.id);
+        });
+
+        categoryGrid.appendChild(button);
+    });
+}
+
+// Find a category by its permanent ID.
+function getCategory(categoryId) {
+    return vocabulary?.categories.find(
+        category => category.id === categoryId
+    );
+}
+
+// Toggle a favorite using its permanent phrase ID.
+function toggleFavorite(categoryId, phraseId) {
+    const category = getCategory(categoryId);
     if (!category) return;
 
-    // Hide category buttons.
-    categoryGrid.hidden = true;
+    const phrase = category.phrases.find(
+        item => item.id === phraseId
+    );
 
-    // Show the phrase area.
+    if (!phrase) return;
+
+    const previousValue = phrase.favorite;
+    phrase.favorite = !phrase.favorite;
+
+    if (!saveVocabulary()) {
+        phrase.favorite = previousValue;
+        alert("Unable to save this favorite. Please try again.");
+        return;
+    }
+
+    showCategory(categoryId);
+}
+
+// Display the selected category.
+function showCategory(categoryId) {
+    const category = getCategory(categoryId);
+    if (!category) return;
+
+    categoryGrid.hidden = true;
     phraseContainer.hidden = false;
     phraseContainer.replaceChildren();
 
-    // Create a Back button.
     const backButton = document.createElement("button");
     backButton.textContent = "← Back";
     backButton.className = "back-button";
-
     backButton.addEventListener("click", showCategories);
 
     phraseContainer.appendChild(backButton);
 
-    // Display the selected category name.
     const heading = document.createElement("h3");
     heading.textContent = category.name;
-
     phraseContainer.appendChild(heading);
 
-    // Create a grid for phrase rows.
     const phraseGrid = document.createElement("div");
     phraseGrid.className = "phrase-grid";
 
-    // Sort favorites to the top while preserving original order.
+    // Favorites first, preserving original phrase order.
     const sortedPhrases = [...category.phrases].sort(
-        (a, b) =>
-            Number(isFavorite(categoryId, b)) -
-            Number(isFavorite(categoryId, a))
+        (a, b) => Number(b.favorite) - Number(a.favorite)
     );
 
-    
-    sortedPhrases.forEach((phrase) => {
-        // Shared visual container for phrase and favorite star.
+    sortedPhrases.forEach(phrase => {
         const phraseRow = document.createElement("div");
         phraseRow.className = "phrase-row";
 
-        // Main phrase button.
         const button = document.createElement("button");
-        button.textContent = phrase;
         button.className = "phrase-button";
+        button.textContent = phrase.text;
 
         button.addEventListener("click", () => {
-            speakText(phrase);
+            speakText(phrase.text);
         });
 
-        // Favorite star, visually integrated into phrase button.
         const favoriteButton = document.createElement("button");
         favoriteButton.className = "favorite-button";
-
-        const favorited = isFavorite(categoryId, phrase);
-
-        favoriteButton.textContent = favorited ? "★" : "☆";
+        favoriteButton.textContent = phrase.favorite ? "★" : "☆";
 
         favoriteButton.setAttribute(
             "aria-label",
-            favorited
-                ? `Remove ${phrase} from favorites`
-                : `Add ${phrase} to favorites`
+            phrase.favorite
+                ? `Remove ${phrase.text} from favorites`
+                : `Add ${phrase.text} to favorites`
         );
 
         favoriteButton.setAttribute(
             "aria-pressed",
-            String(favorited)
+            String(phrase.favorite)
         );
 
         favoriteButton.addEventListener("click", () => {
-            toggleFavorite(categoryId, phrase);
+            toggleFavorite(categoryId, phrase.id);
         });
 
         phraseRow.appendChild(button);
         phraseRow.appendChild(favoriteButton);
-
         phraseGrid.appendChild(phraseRow);
     });
-
 
     phraseContainer.appendChild(phraseGrid);
 }
 
-// Return to the categories.
+// Return to the category selection screen.
 function showCategories() {
     phraseContainer.hidden = true;
     categoryGrid.hidden = false;
 }
-
-// Connect category buttons to their categories.
-categoryButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-        showCategory(button.dataset.category);
-    });
-});
-
-// Persistent Quick Phrases.
-const quickPhraseButtons = document.querySelectorAll(
-    ".quick-phrase-button"
-);
-
-quickPhraseButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-        const phrase = button.dataset.phrase;
-
-        if (phrase) {
-            speakText(phrase);
-        }
-    });
-});

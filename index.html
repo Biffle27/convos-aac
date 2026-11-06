@@ -22,6 +22,7 @@
         <header class="app-header">
             <h1>Convos AAC</h1>
 
+            
             <div class="header-controls">
                 <button id="themeButton"
                         aria-label="Toggle theme">
@@ -31,11 +32,19 @@
                 <button
                     id="settingsButton"
                     aria-controls="settingsPanel"
-                    aria-expanded="false"
-                >
+                    aria-expanded="false">
                     Settings
                 </button>
+
+                <button
+                    id="editModeButton"
+                    type="button"
+                    aria-controls="editModePanel"
+                    aria-expanded="false">
+                    Edit Mode
+                </button>
             </div>
+
         </header>
 
         <section id="settingsPanel"
@@ -52,6 +61,8 @@
                     <option value="small">Small</option>
                     <option value="medium">Medium</option>
                     <option value="large">Large</option>
+                    <option value="xl">Extra Large (XL)</option>
+                    <option value="xxl">Extra Extra Large (XXL)</option>
                 </select>
             </div>
 
@@ -82,6 +93,73 @@
                     Test Voice
                 </button>
             </div>
+        </section>
+
+        
+        <!-- Vocabulary editing panel -->
+        <section
+            id="editModePanel"
+            class="edit-mode-panel"
+            aria-labelledby="editModeHeading"
+            hidden>
+
+            <h2 id="editModeHeading">Customize Vocabulary</h2>
+
+            <p>
+                Edit your Quick Phrases, categories, and vocabulary.
+            </p>
+
+            <div class="edit-mode-options">
+                <button id="editQuickPhrasesButton" type="button">
+                    Edit Quick Phrases
+                </button>
+
+                <button id="editCategoriesButton" type="button">
+                    Manage Categories
+                </button>
+
+                <button id="editCategoryPhrasesButton" type="button">
+                    Edit Category Phrases
+                </button>
+            </div>
+
+            <div class="vocabulary-backup-section">
+                <h3>Vocabulary Backup & Recovery</h3>
+
+                <p>
+                    Save a copy of your vocabulary, restore a backup,
+                    or return to the original phrases.
+                </p>
+
+                <div class="vocabulary-backup-actions">
+                    <button id="exportVocabularyButton" type="button">
+                        Export Vocabulary
+                    </button>
+
+                    <button id="importVocabularyButton" type="button">
+                        Import Vocabulary
+                    </button>
+
+                    <button id="restoreDefaultsButton" type="button">
+                        Restore Defaults
+                    </button>
+                </div>
+
+                <input
+                    id="vocabularyImportFile"
+                    type="file"
+                    accept=".json,application/json"
+                    aria-label="Choose vocabulary backup file"
+                    hidden
+                >
+
+                <p id="vocabularyBackupStatus"
+                    class="vocabulary-backup-status"
+                    role="status"
+                    aria-live="polite"></p>
+            </div>
+
+            <div id="editModeContent"></div>
         </section>
 
         <!-- NEW: Quick Phrases section -->
@@ -193,6 +271,8 @@
     <script src="src/js/settings.js"></script>
     <script src="src/js/speech.js"></script>
     <script src="src/js/phrases.js"></script>
+    <script src="src/js/customization.js"></script>
+    <script src="src/js/vocabulary-backup.js"></script>
     <script src="src/js/main.js"></script>
 </body>
 </html>
