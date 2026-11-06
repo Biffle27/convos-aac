@@ -46,8 +46,16 @@ function stopSpeech() {
     window.speechSynthesis.cancel();
 }
 
-// Connect buttons.
-speakButton.addEventListener("click", speakMessage);
+
+ // Connect buttons.
+speakButton.addEventListener("click", () => {
+    speakMessage();
+
+    // Return focus to the message text box.
+    const messageInput = document.getElementById("messageInput");
+    messageInput.focus({ preventScroll: true });
+});
+
 stopButton.addEventListener("click", stopSpeech);
 
 // Disable speech buttons if unsupported.

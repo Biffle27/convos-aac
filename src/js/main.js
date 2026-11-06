@@ -3,9 +3,13 @@ document.addEventListener("DOMContentLoaded", () => {
     loadPhrases();
 
     const clearButton = document.getElementById("clearButton");
+    const messageInput = document.getElementById("messageInput");
 
     clearButton.addEventListener("click", () => {
-        document.getElementById("messageInput").value = "";
+        messageInput.value = "";
+
+        // Return keyboard focus to the message box.
+        messageInput.focus({ preventScroll: true });
     });
 });
 
