@@ -23,6 +23,58 @@ function toggleEditMode() {
 
     editModePanel.hidden = !isEditMode;
 
+    const isEditing = !editModePanel.hidden;
+
+    // Hide communication vocabulary while editing.
+    const quickPhrasesSection = document.getElementById(
+        "quickPhrasesSection"
+    );
+
+    const categoriesSection = document.querySelector(
+        ".categories-section"
+    );
+
+    const phraseContainer = document.getElementById(
+        "phraseContainer"
+    );
+
+    if (isEditing) {
+        // Hide Quick Phrases, categories, and phrase buttons.
+        quickPhrasesSection.hidden = true;
+        categoriesSection.hidden = true;
+        phraseContainer.hidden = true;
+
+    } else {
+        // Close Vocabulary Backup & Recovery when exiting Edit Mode.
+        const backupPanel = document.getElementById(
+            "vocabularyBackupPanel"
+        );
+
+        const backupButton = document.getElementById(
+            "toggleVocabularyBackupButton"
+        );
+
+        if (backupPanel && backupButton) {
+            backupPanel.hidden = true;
+
+            backupButton.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+        }
+
+        // Restore Quick Phrases if any exist.
+        quickPhrasesSection.hidden =
+            !vocabulary || vocabulary.quickPhrases.length === 0;
+
+        // Make the category section visible again.
+        categoriesSection.hidden = false;
+
+        // Return to the category selection screen.
+        showCategories();
+    }
+
+    // Update the Edit Mode button label.
     editModeButton.textContent = isEditMode
         ? "Done Editing"
         : "Edit Mode";

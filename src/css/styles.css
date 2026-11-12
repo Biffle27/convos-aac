@@ -653,3 +653,48 @@ h3 {
     overflow-wrap: anywhere;
     white-space: normal;
 }
+
+/* Vocabulary Backup & Recovery toggle */
+
+#toggleVocabularyBackupButton {
+    display: block;
+    width: fit-content;
+    max-width: 100%;
+    margin: 20px auto 12px;
+    padding: 12px 24px;
+
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    font: inherit;
+    font-size: 0.9em;
+    text-align: center;
+    cursor: pointer;
+}
+
+#toggleVocabularyBackupButton:hover {
+    background: var(--surface-hover);
+}
+
+#toggleVocabularyBackupButton:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 3px;
+}
+
+
+/* Align backup icon and button text */
+
+#toggleVocabularyBackupButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+#toggleVocabularyBackupButton .backup-icon {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+}

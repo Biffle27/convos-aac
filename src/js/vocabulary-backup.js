@@ -354,3 +354,26 @@ restoreDefaultsButton.addEventListener(
         }
     }
 );
+
+/* =========================================
+   BACKUP PANEL VISIBILITY
+========================================= */
+
+const toggleVocabularyBackupButton = document.getElementById(
+    "toggleVocabularyBackupButton"
+);
+
+const vocabularyBackupPanel = document.getElementById(
+    "vocabularyBackupPanel"
+);
+
+toggleVocabularyBackupButton.addEventListener("click", () => {
+    // Toggle the backup options open or closed.
+    vocabularyBackupPanel.hidden = !vocabularyBackupPanel.hidden;
+
+    // Update accessibility information.
+    toggleVocabularyBackupButton.setAttribute(
+        "aria-expanded",
+        String(!vocabularyBackupPanel.hidden)
+    );
+});

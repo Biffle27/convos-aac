@@ -75,15 +75,44 @@ themeButton.addEventListener("click", () => {
 });
 
 settingsButton.addEventListener("click", () => {
-    // Toggle the settings panel open or closed.
+    // Open or close the Settings panel.
     settingsPanel.hidden = !settingsPanel.hidden;
 
-    // Let assistive technology know whether
-    // the settings panel is currently open.
+    const isSettingsOpen = !settingsPanel.hidden;
+
     settingsButton.setAttribute(
         "aria-expanded",
-        String(!settingsPanel.hidden)
+        String(isSettingsOpen)
     );
+
+    // Get the communication vocabulary sections.
+    const quickPhrasesSection = document.getElementById(
+        "quickPhrasesSection"
+    );
+
+    const categoriesSection = document.querySelector(
+        ".categories-section"
+    );
+
+    const phraseContainer = document.getElementById(
+        "phraseContainer"
+    );
+
+    if (isSettingsOpen) {
+        // Hide communication vocabulary while Settings is open.
+        quickPhrasesSection.hidden = true;
+        categoriesSection.hidden = true;
+        phraseContainer.hidden = true;
+
+    } else {
+        // Restore Quick Phrases if any exist.
+        quickPhrasesSection.hidden =
+            !vocabulary || vocabulary.quickPhrases.length === 0;
+
+        // Restore the category selection screen.
+        categoriesSection.hidden = false;
+        showCategories();
+    }
 });
 
 // Change text size.

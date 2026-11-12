@@ -1,5 +1,5 @@
 
-const CACHE_NAME = "convos-aac-v9";
+const CACHE_NAME = "convos-aac-v11";
 
 const APP_FILES = [
     "./",
