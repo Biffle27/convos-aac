@@ -144,16 +144,37 @@ applySettings();
 
 
 // Voice preference controls
+const languageSelect = document.getElementById("languageSelect");
 const voiceSelect = document.getElementById("voiceSelect");
 const testVoiceButton = document.getElementById("testVoiceButton");
 
-// Retrieve the saved voice preference.
-let selectedVoiceURI =
-    localStorage.getItem("convos-voice") || "";
+const voiceTestPhrases = {
+    en: "Hello! This is my Convos voice.",
+    es: "¡Hola! Esta es mi voz de Convos.",
+    fil: "Kumusta! Ito ang boses ko sa Convos.",
+    tl: "Kumusta! Ito ang boses ko sa Convos.",
+    fr: "Bonjour ! Voici ma voix Convos.",
+    de: "Hallo! Das ist meine Convos-Stimme.",
+    it: "Ciao! Questa è la mia voce Convos.",
+    pt: "Olá! Esta é a minha voz do Convos.",
+    ja: "こんにちは！これは私のConvosの声です。",
+    ko: "안녕하세요! 이것은 제 Convos 목소리입니다.",
+    zh: "你好！这是我的 Convos 语音。",
+    hi: "नमस्ते! यह मेरी Convos आवाज़ है।",
+    ar: "مرحبًا! هذا صوتي في Convos.",
+    ru: "Привет! Это мой голос в Convos.",
+    nl: "Hallo! Dit is mijn Convos-stem.",
+    vi: "Xin chào! Đây là giọng nói Convos của tôi.",
+    th: "สวัสดี! นี่คือเสียง Convos ของฉัน."
+};
+
+let selectedVoiceURI = localStorage.getItem("convos-voice") || "";
+let selectedLanguage = localStorage.getItem("convos-language") || "en";
 
 // Populate the dropdown with available voices.
 function populateVoiceList() {
     if (!("speechSynthesis" in window)) {
+        languageSelect.disabled = true;
         voiceSelect.disabled = true;
         testVoiceButton.disabled = true;
         return;
@@ -161,7 +182,61 @@ function populateVoiceList() {
 
     const voices = window.speechSynthesis.getVoices();
 
-    // Keep the default voice option.
+    // Some browsers load their voice list asynchronously.
+    // Don't erase saved selections while waiting.
+    if (voices.length === 0) {
+        return;
+    }
+
+    // Build a list of languages available on this device.
+    const displayNames = new Intl.DisplayNames(
+        ["en"],
+        { type: "language" }
+    );
+
+    const languages = [...new Set(
+        voices.map(voice => voice.lang.split("-")[0].toLowerCase())
+    )].sort((a, b) => {
+        const nameA = displayNames.of(a) || a;
+        const nameB = displayNames.of(b) || b;
+
+        return nameA.localeCompare(nameB, "en");
+    });
+
+    languageSelect.replaceChildren();
+
+    languages.forEach(lang => {
+        const option = document.createElement("option");
+        option.value = lang;
+
+        try {
+            const displayNames = new Intl.DisplayNames(
+                ["en"],
+                { type: "language" }
+            );
+
+            option.textContent = displayNames.of(lang) || lang;
+        } catch {
+            option.textContent = lang;
+        }
+
+        languageSelect.appendChild(option);
+    });
+
+    // Restore the selected language, if available.
+    if (!languages.includes(selectedLanguage)) {
+        selectedLanguage = languages.includes("en")
+            ? "en"
+            : languages[0];
+    }
+
+    languageSelect.value = selectedLanguage;
+
+    // Display only voices matching the selected language.
+    const filteredVoices = voices.filter(voice =>
+        voice.lang.split("-")[0].toLowerCase() === selectedLanguage
+    );
+
     voiceSelect.replaceChildren();
 
     const defaultOption = document.createElement("option");
@@ -169,33 +244,37 @@ function populateVoiceList() {
     defaultOption.textContent = "Device Default";
     voiceSelect.appendChild(defaultOption);
 
-    // Show available English voices.
-    const englishVoices = voices.filter(voice =>
-        voice.lang.toLowerCase().startsWith("en")
-    );
+    filteredVoices
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .forEach(voice => {
+            const option = document.createElement("option");
+            option.value = voice.voiceURI;
+            option.textContent = `${voice.name} (${voice.lang})`;
+            voiceSelect.appendChild(option);
+        });
 
-    englishVoices.forEach(voice => {
-        const option = document.createElement("option");
-
-        option.value = voice.voiceURI;
-        option.textContent = `${voice.name} (${voice.lang})`;
-
-        voiceSelect.appendChild(option);
-    });
-
-    // Restore the saved voice when it becomes available.
-    const savedVoiceAvailable = englishVoices.some(
+    // Restore the saved voice if it matches the language.
+    voiceSelect.value = filteredVoices.some(
         voice => voice.voiceURI === selectedVoiceURI
+    ) ? selectedVoiceURI : "";
+}
+
+languageSelect.addEventListener("change", () => {
+    selectedLanguage = languageSelect.value;
+
+    // Reset the selected voice when switching languages.
+    selectedVoiceURI = "";
+
+    localStorage.setItem(
+        "convos-language",
+        selectedLanguage
     );
 
-    if (savedVoiceAvailable) {
-        voiceSelect.value = selectedVoiceURI;
-    } else {
-        // Display Device Default temporarily,
-        // but preserve the saved preference.
-        voiceSelect.value = "";
-    }
-}
+    localStorage.setItem("convos-voice", "");
+
+    // Refresh the voice list for the selected language.
+    populateVoiceList();
+});
 
 // Save voice changes.
 voiceSelect.addEventListener("change", () => {
@@ -209,7 +288,16 @@ voiceSelect.addEventListener("change", () => {
 
 // Test the selected voice.
 testVoiceButton.addEventListener("click", () => {
-    speakText("Hello! This is my Convos AAC voice.");
+    // Find the test phrase for the selected language.
+    const testPhrase = voiceTestPhrases[selectedLanguage];
+
+    if (testPhrase) {
+        // Speak the translated phrase.
+        speakText(testPhrase);
+    } else {
+        // Notify the user if no translation is available.
+        alert("A test phrase is not yet available for this language.");
+    }
 });
 
 // Browsers may load voices asynchronously.

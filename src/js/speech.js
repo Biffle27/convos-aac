@@ -15,10 +15,13 @@ function speakText(text) {
 
     const utterance = new SpeechSynthesisUtterance(text);
 
-    utterance.lang = "en-US";
+    // Apply the user's selected speech rate.
     utterance.rate = appSettings.speechRate;
 
-    // Use the selected voice when available.
+    // Use the selected language.
+    utterance.lang = selectedLanguage || "en";
+
+    // Find the selected voice, if one is available.
     if (selectedVoiceURI) {
         const voices = window.speechSynthesis.getVoices();
 
@@ -27,7 +30,10 @@ function speakText(text) {
         );
 
         if (selectedVoice) {
-        utterance.voice = selectedVoice;
+            utterance.voice = selectedVoice;
+
+            // Match the utterance language to the voice.
+            utterance.lang = selectedVoice.lang;
         }
     }
 
