@@ -74,7 +74,14 @@ themeButton.addEventListener("click", () => {
     applySettings();
 });
 
+
 settingsButton.addEventListener("click", () => {
+
+    // Close Edit Mode before opening Settings.
+    if (settingsPanel.hidden && !editModePanel.hidden) {
+        toggleEditMode();
+    }
+
     // Open or close the Settings panel.
     settingsPanel.hidden = !settingsPanel.hidden;
 

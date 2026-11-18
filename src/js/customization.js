@@ -19,6 +19,11 @@ let isEditMode = false;
 
 // Open or close Edit Mode.
 function toggleEditMode() {
+    // Close Settings before opening Edit Mode.
+    if (!isEditMode && !settingsPanel.hidden) {
+        settingsButton.click();
+    }
+
     isEditMode = !isEditMode;
 
     editModePanel.hidden = !isEditMode;
